@@ -20,8 +20,8 @@ public class StudentController {
                         Gender.MALE),
                 new Student(
                         2L,
-                        "Ana",
-                        "ana@gmail.com",
+                        "Lea",
+                        "lea@gmail.com",
                         Gender.FEMALE)
         );
         return students;
