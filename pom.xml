@@ -15,6 +15,8 @@
     <description>Demo project for Spring Boot</description>
     <properties>
         <java.version>17</java.version>
+        <app.image.name>fullstack</app.image.name>
+        <app.image.tag/>
     </properties>
     <dependencies>
         <dependency>
@@ -49,6 +51,23 @@
                 </configuration>
             </plugin>
             <plugin>
+                <groupId>com.google.cloud.tools</groupId>
+                <artifactId>jib-maven-plugin</artifactId>
+                <version>2.5.2</version>
+                <configuration>
+                    <from>
+                        <image>openjdk:17</image>
+                    </from>
+                    <container>
+                    <mainClass>com.example.fullstack.FullStackApplication</mainClass>
+                        <ports>
+                            <port>8080</port>
+                        </ports>
+                        <format>OCI</format>
+                    </container>
+                </configuration>
+            </plugin>
+            <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <groupId>org.apache.maven.plugins</groupId>
                 <configuration>
@@ -60,6 +79,118 @@
     </build>
 
     <profiles>
+        <profile>
+            <id>jib-push-to-dockerhub</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>com.google.cloud.tools</groupId>
+                        <artifactId>jib-maven-plugin</artifactId>
+                        <version>2.5.2</version>
+                        <configuration>
+                            <from>
+                                <image>openjdk:17</image>
+                            </from>
+                            <container>
+                                <mainClass>com.example.fullstack.FullStackApplication</mainClass>
+                                <ports>
+                                    <port>8080</port>
+                                </ports>
+                                <format>OCI</format>
+                            </container>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>push-custom-tag</id>
+                                <phase>package</phase>
+                                <configuration>
+                                    <to>
+                                        <image>docker.io/kirca54/${app.image.name}:${app.image.tag}</image>
+                                        <auth>
+                                            <username>Kirca54</username>
+                                            <password>termafit12</password>
+                                        </auth>
+                                    </to>
+                                </configuration>
+                                <goals>
+                                    <goal>build</goal>
+                                </goals>
+                            </execution>
+                            <execution>
+                                <id>push-latest-tag</id>
+                                <phase>package</phase>
+                                <configuration>
+                                    <to>
+                                        <image>docker.io/kirca54/${app.image.name}:latest</image>
+                                    </to>
+                                </configuration>
+                                <goals>
+                                    <goal>build</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>jib-push-to-local</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>com.google.cloud.tools</groupId>
+                        <artifactId>jib-maven-plugin</artifactId>
+                        <version>2.5.2</version>
+                        <configuration>
+                            <from>
+                                <image>openjdk:17</image>
+                            </from>
+                            <container>
+                                <mainClass>com.example.fullstack.FullStackApplication</mainClass>
+                                <ports>
+                                    <port>8080</port>
+                                </ports>
+                                <format>OCI</format>
+                            </container>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>push-custom-tag</id>
+                                <phase>package</phase>
+                                <configuration>
+                                    <to>
+                                        <image>kirca54/${app.image.name}:${app.image.tag}</image>
+                                    </to>
+                                </configuration>
+                                <goals>
+                                    <goal>dockerBuild</goal>
+                                </goals>
+                            </execution>
+                            <execution>
+                                <id>push-latest-tag</id>
+                                <phase>package</phase>
+                                <configuration>
+                                    <to>
+                                        <image>kirca54/${app.image.name}:latest</image> <auth>
+                                    </auth>
+                                    </to>
+                                </configuration>
+                                <goals>
+                                    <goal>dockerBuild</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
     <profile>
     <id>build-frontend</id>
     <activation>
