@@ -1,9 +1,9 @@
 package com.example.fullstack.student;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 import lombok.AllArgsConstructor;
+import org.springframework.web.bind.annotation.*;
+import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping(path = "api/v1/students")
@@ -18,7 +18,7 @@ public class StudentController {
     }
 
     @PostMapping
-    public void addStudent(@RequestBody Student student) {
+    public void addStudent(@Valid @RequestBody Student student) {
         studentService.addStudent(student);
     }
 
