@@ -125,10 +125,7 @@
                                 <configuration>
                                     <to>
                                         <image>docker.io/kirca54/${app.image.name}:${app.image.tag}</image>
-                                        <auth>
-                                            <username>Kirca54</username>
-                                            <password>termafit12</password>
-                                        </auth>
+                                        <auth></auth>
                                     </to>
                                 </configuration>
                                 <goals>
